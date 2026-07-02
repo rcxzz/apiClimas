@@ -10,8 +10,8 @@ export const AppDataSource = new DataSource({
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "docker", 
-  database: "api-clima",      
+  password: "postgres", 
+  database: "api-climas",      
 
   synchronize: false,
   logging: true,
