@@ -8,10 +8,8 @@ export default class SessionsController {
     try {
       const { email, password } = request.body;
 
-      // Login de teste temporário sem banco de dados
       if (email === 'admin@clima.com' && password === '123456') {
         
-        // Gera o token usando um ID fictício
         const token = sign({}, 'SUA_CHAVE_SECRETA', {
           subject: 'id-ficticio-do-admin',
           expiresIn: '1d',

@@ -29,7 +29,6 @@ export default class CreateForecastService {
     const citiesRepository =
       AppDataSource.getRepository(City);
 
-    // Verifica se já existe uma previsão idêntica para a mesma cidade na mesma data
     const forecastExists =
       await forecastsRepository.findOne({
         where: { 
@@ -44,7 +43,6 @@ export default class CreateForecastService {
       );
     }
 
-    // Valida se a cidade informada realmente existe no banco (Chave Estrangeira)
     const city =
       await citiesRepository.findOne({
         where: { id: city_id },

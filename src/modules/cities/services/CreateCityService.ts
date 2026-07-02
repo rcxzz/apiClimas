@@ -23,7 +23,6 @@ export default class CreateCityService {
     const citiesRepository =
       AppDataSource.getRepository(City);
 
-    // Validação opcional: impede cadastrar a mesma cidade no mesmo estado
     const cityExists =
       await citiesRepository.findOne({
         where: { nome, estado },

@@ -2,6 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import AppError from '@shared/errors/AppError';
 
+interface ITokenPayload {
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
 export default function isAuthenticated(
   request: Request,
   response: Response,
@@ -13,26 +19,22 @@ export default function isAuthenticated(
     throw new AppError('JWT Token está faltando.', 401);
   }
 
-  // Divide o cabeçalho "Bearer <token>" em um array
-  const parts = authHeader.split(' ');
+  const [, token] = authHeader.split(' ');
 
-  // Verifica se o formato possui exatamente duas partes (Bearer e o Token)
-  if (parts.length !== 2) {
-    throw new AppError('JWT Token com formato inválido.', 401);
-  }
-
-  const [scheme, token] = parts;
-
-  // Verifica se a primeira parte é a palavra "Bearer"
-  if (!/^Bearer$/i.test(scheme)) {
-    throw new AppError('JWT Token mal formatado.', 401);
+  if (!token) {
+    throw new AppError('JWT Token inválido.', 401);
   }
 
   try {
-    // Com a validação acima, o TS garante que 'token' é uma string 100% válida
-    verify(token, 'SUA_CHAVE_SECRETA');
+    const decoded = verify(token, '338f727fd110271699986f4f236838b2' as string);
 
-    return next(); // Token válido, pode seguir para a Controller!
+    const { sub } = decoded as ITokenPayload;
+
+    request.user = {
+      id: sub,
+    };
+
+    return next();
   } catch {
     throw new AppError('JWT Token inválido.', 401);
   }

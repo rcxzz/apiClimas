@@ -4,14 +4,15 @@ import path from "path";
 
 import City from "@modules/cities/typeorm/entities/City";
 import Forecast from "@modules/forecasts/typeorm/entities/Forecast";
+import User from "@shared/typeorm/entities/User";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "postgres", 
-  database: "api-climas",      
+  password: "docker", 
+  database: "api-clima",      
 
   synchronize: false,
   logging: true,
@@ -19,6 +20,7 @@ export const AppDataSource = new DataSource({
   entities: [
     City,
     Forecast,
+    User
   ],
 
   migrations: [
